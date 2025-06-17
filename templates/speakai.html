@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://img.freepik.com/premium-vector/voice-assistant-concept-voice-recognition-sound-wave-imitation-voice-sound-personal-assistant_476325-1869.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        #robot {
+            width: 100px;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+        #robot.responding {
+            transform: scale(1.1);
+        }
+        #response {
+            font-size: 18px;
+            margin-top: 20px;
+            white-space: pre-line;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Voice Assistant</h1>
+        <button id="start-btn">🎤 Speak</button><br>
+        <img id="robot" src="https://static.vecteezy.com/system/resources/previews/035/857/280/non_2x/happy-smiling-robot-with-bubble-speech-isolated-chat-bot-with-talking-dialog-chatbot-robot-greets-artificial-intelligence-ai-helper-service-and-support-assistant-cartoon-flat-illustration-vector.jpg" alt="Robot" />
+        <p id="response"></p>
+    </div>
+    <script>
+        const startBtn = document.getElementById('start-btn');
+        const responseElement = document.getElementById('response');
+        const robot = document.getElementById('robot');
+
+        
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        const synth = window.speechSynthesis;
+
+        recognition.interimResults = false;
+        recognition.lang = 'en-US';
+
+        
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript.toLowerCase();
+            responseElement.textContent = `You said: "${transcript}"`;
+            respond(transcript);
+        };
+
+        
+        recognition.onend = () => {
+            startBtn.disabled = false;
+            robot.classList.remove('responding');
+        };
+
+        
+        startBtn.addEventListener('click', () => {
+            startBtn.disabled = true;
+            robot.classList.add('responding');
+            recognition.start();
+        });
+
+        
+        function respond(transcript) {
+            let responseText = "I didn't understand that. Please try again.";
+
+            
+            if (transcript.includes('hello')) {
+                responseText = "Hello! How can I assist you today?";
+            } else if (transcript.includes('how are you')) {
+                responseText = "I'm just a program, but I'm doing great! How about you?";
+            } else if (transcript.includes('what is your name')) {
+                responseText = "I'm your friendly voice assistant!";
+            } else if (transcript.includes('weather')) {
+                responseText = "I'm not connected to the internet right now, but I recommend checking your local weather app!";
+            } else if (transcript.includes('bye') || transcript.includes('goodbye')) {
+                responseText = "Goodbye! Have a great day!";
+            }else if (transcript.includes('what is verb')) {
+                responseText = "It is a state of action";
+            }else if (transcript.includes('what is')) {
+                
+                const question = transcript.replace("what is", "").trim();
+                responseText = `You asked about "${question}". Unfortunately, I'm not connected to an external database, but I encourage you to search online!`;
+            } else if (transcript.includes('tell me about')) {
+                const topic = transcript.replace("tell me about", "").trim();
+                responseText = `You asked about "${topic}". That's interesting! I don't have detailed info now, but feel free to explore!`;
+            }
+            else if (transcript.includes('who are you')) {
+                responseText = "I'm your friendly voice assistant!";
+            }else if (transcript.includes('what is verb')) {
+                responseText = "Shows an action of state or being occured!";
+            }
+            
+
+            responseElement.textContent += `\nAI: ${responseText}`;
+            speak(responseText);
+        }
+
+        
+        function speak(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.onend = () => {
+                console.log("Speech ended.");
+            };
+            synth.speak(utterance);
+        }
+    </script>
+</body>
+</html>

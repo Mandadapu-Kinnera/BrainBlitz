@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrainBlitz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+        }
+
+        header {
+            background-color: #b4eeea;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #333;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .content-section {
+            display: none;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            margin-top: 20px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 5px 0;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #f9fc14;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+
+        button:hover {
+            background-color: #ef99db;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        .results-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        h4{
+            text-align: center;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+        }
+
+        header {
+            background-color: #b4eeea;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #333;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .content-section {
+            display: none;
+            padding: 20px;
+        }
+
+        .memory-game {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .card .front,
+        .card .back {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            position: absolute;
+            backface-visibility: hidden;
+            transition: transform 0.5s;
+        }
+
+        .card .front {
+            background-color: #ffcc00;
+        }
+
+        .card .back {
+            background-color: white;
+            background-size: cover;
+            transform: rotateY(180deg);
+        }
+
+        .card.selected .front {
+            transform: rotateY(180deg);
+        }
+
+        .card.selected .back {
+            transform: rotateY(0deg);
+        }
+
+        .card.match .front,
+        .card.match .back {
+            visibility: hidden;
+        }
+
+        .card.popped-out {
+            transform: scale(1.1);
+            opacity: 0.5;
+            transition: transform 0.5s, opacity 0.5s;
+        }
+
+        .puzzle-container {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+            position: relative;
+        }
+
+        .tile {
+            width: 100px;
+            height: 100px;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .tile-empty {
+            background-color: transparent;
+        }
+        .video-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .video {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 10px;
+            width: 300px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .video h3 {
+            font-size: 16px;
+            color: #444;
+            margin-bottom: 10px;
+        }
+
+        .video iframe {
+            width: 100%;
+            height: 180px;
+            border: none;
+        }
+        h2{
+            text-align: center;
+        }
+        a{
+            text-align: center;
+        }
+        
+.simple-button {
+    background-color: #6acbf1; 
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.simple-button:hover {
+    background-color: #95c397; 
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>BrainBlitz</h1>
+        <nav>
+            <ul>
+                <li><a href="#" onclick="showSection('quiz')">Quiz Section</a></li>
+                <li><a href="#" onclick="showSection('english')">English Learning</a></li>
+                <li><a href="#" onclick="showSection('games')">Games</a></li>
+            </ul>
+        </nav>
+
+    </header>
+
+    <main>
+        <section id="quiz" class="content-section">
+            <h2>Quiz Section</h2>
+            <p><h4>Select a subject to start the quiz</h4></p>
+            <div class="button-container">
+                <button onclick="startQuiz('Maths')">Maths</button>
+                <button onclick="startQuiz('Science')">Science</button>
+                <button onclick="startQuiz('Social')">Social</button>
+                <button onclick="startQuiz('Arts')">Arts</button>
+                <button onclick="startQuiz('Biology')">Biology</button>
+            </div>
+
+
+            <div id="quiz-container" class="quiz-container hidden">
+                <h2 id="quiz-title"></h2>
+                <div id="question-container"></div>
+                <button id="submit-btn" class="hidden" onclick="submitQuiz()">Submit</button>
+            </div>
+
+            <div id="results-container" class="results-container hidden">
+                <h2>Results</h2>
+                <div id="results"></div>
+                <button onclick="restartQuiz()">Restart</button>
+            </div>
+            
+        </section>
+
+        <section id="english" class="content-section">
+            <h2>English Learning</h2>
+            <p>Improve your English</p>
+            <a href="/chat" class="simple-button">chat</a> <br>
+            <a href="/learn" class="simple-button">learn</a><br>
+            <a href="/challenge" class="simple-button">challenge</a><br>
+            <!-- <a href="/speakai" class="simple-button">speakai</a><br> -->
+            <a href="/live" class="simple-button">live</a><br>
+        </section>
+        
+
+        <section id="games" class="content-section">
+            <h2>Games</h2>
+            <p>Play fun and educational games!</p>
+            <ul>
+                <li><a href="#" onclick="loadGame('memory')">Memory Game</a></li>
+                <li><a href="#" onclick="loadGame('puzzle')">Puzzle Game</a></li>
+            </ul>
+            <div id="games-content"></div>
+        </section>
+    </main>
+
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        function startQuiz(subject) {
+            const quizContainer = document.getElementById('quiz-container');
+            let questions = [];
+            if (subject === 'Maths') {
+                questions = [
+                    { question: 'What is 2 + 2?', answers: ['3', '4', '5'], correct: '4' },
+                    { question: 'What is 3 * 3?', answers: ['6', '9', '12'], correct: '9' },
+                    { question: 'What is 10 / 2?', answers: ['3', '5', '7'], correct: '5' }
+                ];
+            } else if (subject === 'Science') {
+                questions = [
+                    { question: 'What planet is known as the Red Planet?', answers: ['Earth', 'Mars', 'Venus'], correct: 'Mars' },
+                    { question: 'What is H2O?', answers: ['Water', 'Hydrogen', 'Oxygen'], correct: 'Water' },
+                    { question: 'What gas do plants absorb from the atmosphere?', answers: ['Oxygen', 'Nitrogen', 'Carbon Dioxide'], correct: 'Carbon Dioxide' }
+                ];
+            } else if (subject === 'Social') {
+                questions = [
+                    { question: 'Who was the first President of the United States?', answers: ['George Washington', 'Thomas Jefferson', 'Abraham Lincoln'], correct: 'George Washington' },
+                    { question: 'In which year did World War II end?', answers: ['1942', '1945', '1948'], correct: '1945' },
+                    { question: 'Which country is the largest by area?', answers: ['Russia', 'Canada', 'China'], correct: 'Russia' }
+                ];
+            } else if (subject === 'Arts') {
+                questions = [
+                    { question: 'Who painted the Mona Lisa?', answers: ['Vincent van Gogh', 'Leonardo da Vinci', 'Pablo Picasso'], correct: 'Leonardo da Vinci' },
+                    { question: 'What is the art of folding paper into shapes called?', answers: ['Origami', 'Calligraphy', 'Sculpture'], correct: 'Origami' },
+                    { question: 'Which instrument has 88 keys?', answers: ['Piano', 'Violin', 'Drums'], correct: 'Piano' }
+                ];
+            } else if (subject === 'Biology') {
+                questions = [
+                    { question: 'What is the powerhouse of the cell?', answers: ['Nucleus', 'Mitochondria', 'Ribosome'], correct: 'Mitochondria' },
+                    { question: 'Which organ is responsible for pumping blood?', answers: ['Brain', 'Heart', 'Liver'], correct: 'Heart' },
+                    { question: 'What is the human body\'s largest organ?', answers: ['Skin', 'Liver', 'Lung'], correct: 'Skin' }
+                ];
+            } 
+
+            let quizHTML = '';
+            questions.forEach((q, index) => {
+                quizHTML += `
+                    <div class="question">
+                        <p>Question ${index + 1}: ${q.question}</p>
+                        ${q.answers.map(answer => `
+                                                        <label>
+                                <input type="radio" name="question${index}" value="${answer}">
+                                ${answer}
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+            });
+
+            document.getElementById('quiz-title').innerText = `${subject} Quiz`;
+            document.getElementById('question-container').innerHTML = quizHTML;
+            document.getElementById('quiz-container').classList.remove('hidden');
+            document.getElementById('submit-btn').classList.remove('hidden');
+            document.getElementById('results-container').classList.add('hidden');
+
+            
+            quizContainer.setAttribute('data-questions', JSON.stringify(questions));
+        }
+
+        function submitQuiz() {
+            const quizContainer = document.getElementById('quiz-container');
+            const questions = JSON.parse(quizContainer.getAttribute('data-questions'));
+            let score = 0;
+            let resultsHTML = '';
+            questions.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+                if (selectedOption) {
+                    const isCorrect = selectedOption.value === q.correct;
+                    if (isCorrect) {
+                        score++;
+                    }
+                    resultsHTML += `
+                        <p>Question ${index + 1}: ${q.question}</p>
+                        <p>Your Answer: ${selectedOption.value} (${isCorrect ? 'Correct' : 'Incorrect'})</p>
+                        <p>Correct Answer: ${q.correct}</p>
+                        <hr>
+                    `;
+                } else {
+                    resultsHTML += `
+                        <p>Question ${index + 1}: ${q.question}</p>
+                        <p>Your Answer: Not Answered</p>
+                        <p>Correct Answer: ${q.correct}</p>
+                        <hr>
+                    `;
+                }
+            });
+
+            document.getElementById('results').innerHTML = `
+                <h3>Your Score: ${score} / ${questions.length}</h3>
+                ${resultsHTML}
+            `;
+
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('results-container').classList.remove('hidden');
+        }
+
+        function restartQuiz() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('results-container').classList.add('hidden');
+        }
+
+        function loadGame(game) {
+            const gamesContent = document.getElementById('games-content');
+            if (game === 'memory') {
+                gamesContent.innerHTML = `
+                    <h3>Memory Game</h3>
+                    <p>Match the pairs of cards!</p>
+                    <div id="memory-game" class="memory-game"></div>
+                `;
+                startMemoryGame();
+            } else if (game === 'puzzle') {
+                gamesContent.innerHTML = `
+                    <h3>Puzzle Game</h3>
+                    <p>Solve the sliding puzzle!</p>
+                    <div class="puzzle-container">
+                        <div class="tile" data-id="1">1</div>
+                        <div class="tile" data-id="2">2</div>
+                        <div class="tile" data-id="3">3</div>
+                        <div class="tile" data-id="4">4</div>
+                        <div class="tile" data-id="5">5</div>
+                        <div class="tile" data-id="6">6</div>
+                        <div class="tile" data-id="7">7</div>
+                        <div class="tile" data-id="8">8</div>
+                        <div class="tile tile-empty"></div>
+                    </div>
+                `;
+                initializePuzzle();
+            }
+        }
+
+        function startMemoryGame() {
+            const gameContainer = document.getElementById('memory-game');
+            const images = [
+                'https://www.picserver.org/pictures/strawberry02-lg.jpg',
+                'https://th.bing.com/th/id/OIP.AbWFu7mNZChFh82IQQa6EgHaEl?w=273&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7',
+                'https://th.bing.com/th/id/OIP.0jZ8f7H-680SrdD_QYlQLAHaLb?w=115&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7',
+                'https://th.bing.com/th/id/OIP.hHoLHNpuIqUyuAki3QNBpQHaHa?w=183&h=184&c=7&r=0&o=5&dpr=1.3&pid=1.7',
+                'https://th.bing.com/th?id=OIP.oE4L5myqlfSi6wyGbYpt3AHaFj&w=288&h=216&c=8&rs=1&qlt=90&o=6&cb=13&dpr=1.3&pid=3.1&rm=2',
+                'https://th.bing.com/th?id=ODL.4b18bf5bf433b0c2eb341a647ed412d5&w=197&h=112&c=7&rs=1&qlt=80&o=6&cb=13&dpr=1.3&pid=RichNav',
+                'https://th.bing.com/th?id=OIP.aJ1Lm4fEhn6WplApUSqUywHaE8&w=306&h=204&c=8&rs=1&qlt=90&o=6&cb=13&dpr=1.3&pid=3.1&rm=2',
+                'https://th.bing.com/th?id=ODL.a7382b297e31606b143d48bfbb200941&w=197&h=112&c=7&rs=1&qlt=80&o=6&cb=13&dpr=1.3&pid=RichNav'
+            ];
+            const cards = [...images, ...images];
+            cards.sort(() => Math.random() - 0.5);
+
+            gameContainer.innerHTML = '';
+
+            cards.forEach((image, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card';
+                cardElement.dataset.image = image;
+
+                const front = document.createElement('div');
+                front.className = 'front';
+                front.style.backgroundColor = '#ccc';
+                cardElement.appendChild(front);
+
+                const back = document.createElement('div');
+                back.className = 'back';
+                back.style.backgroundImage = `url(${image})`;
+                back.style.backgroundColor = '#eee';
+                cardElement.appendChild(back);
+
+                gameContainer.appendChild(cardElement);
+            });
+
+            let selectedCards = [];
+            gameContainer.addEventListener('click', (event) => {
+                const card = event.target.closest('.card');
+                if (!card || selectedCards.includes(card) || card.classList.contains('match')) return;
+
+                card.classList.add('selected');
+                selectedCards.push(card);
+
+                if (selectedCards.length === 2) {
+                    if (selectedCards[0].dataset.image === selectedCards[1].dataset.image) {
+                        selectedCards.forEach(c => {
+                            c.classList.add('match');
+                            c.classList.remove('selected');
+                        });
+                        setTimeout(() => {
+                            selectedCards.forEach(c => c.classList.add('popped-out'));
+                            selectedCards = [];
+                        }, 500);
+                    } else {
+                        setTimeout(() => {
+                            selectedCards.forEach(c => {
+                                c.classList.remove('selected');
+                            });
+                            selectedCards = [];
+                        }, 1000);
+                    }
+                }
+            });
+        }
+
+        function initializePuzzle() {
+            const tiles = document.querySelectorAll('.tile');
+            let emptyTile = document.querySelector('.tile-empty');
+
+            tiles.forEach(tile => {
+                tile.addEventListener('click', () => moveTile(tile));
+            });
+
+            function moveTile(tile) {
+                const emptyTileIndex = Array.from(tiles).indexOf(emptyTile);
+                const tileIndex = Array.from(tiles).indexOf(tile);
+
+                const canMove = [
+                    emptyTileIndex - 3 === tileIndex, 
+                    emptyTileIndex + 3 === tileIndex, 
+                    (emptyTileIndex % 3 !== 0 && emptyTileIndex - 1 === tileIndex), 
+                    (emptyTileIndex % 3 !== 2 && emptyTileIndex + 1 === tileIndex) 
+                ].some(Boolean);
+
+                if (canMove) {
+                    emptyTile.textContent = tile.textContent;
+                    tile.textContent = '';
+                    emptyTile.classList.remove('tile-empty');
+                    tile.classList.add('tile-empty');
+                    emptyTile = tile;
+                    checkWin();
+                }
+            }
+
+            function checkWin() {
+                const correctOrder = ['1', '2', '3', '4', '5', '6', '7', '8', ''];
+                const currentOrder = Array.from(tiles).map(tile => tile.textContent);
+                if (correctOrder.every((value, index) => value === currentOrder[index])) {
+                    alert('Congratulations! You solved the puzzle!');
+                }
+            }
+        }
+        
+    </script>
+</body>
+</html> 

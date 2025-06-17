@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrainBlitz - Welcome</title>
+    <style>
+
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('https://img.freepik.com/free-photo/graphic-question-mark-asking-symbol_53876-120420.jpg?t=st=1722959946~exp=1722963546~hmac=8d02c56b96a056375e10ac4f720e579574377d196e9dd288541f83b258c26f91&w=1060');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+}
+
+
+.welcome-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+
+.welcome-message {
+    background: rgba(241, 239, 240, 0.7); 
+    padding: 2rem;
+    border-radius: 10px;
+}
+
+h1 {
+    font-size: 3rem;
+    margin: 0;
+    color: black;
+}
+
+p {
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+    color: black;
+}
+
+#start-button {
+    background-color: #1e90ff;
+    border: none;
+    color: #fff;
+    padding: 15px 25px;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#start-button:hover {
+    background-color: #4682b4;
+}
+
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <div class="welcome-message">
+            <h1>Welcome to BrainBlitz!</h1>
+            <button id="start-button">Start</button>
+        </div>
+    </div>
+    <script>
+document.getElementById('start-button').addEventListener('click', function() {
+    alert('Welcome to BrainBlitz!');
+});
+
+document.getElementById('start-button').addEventListener('click', function() {
+    window.location.href = '/brainblitz';
+});
+
+    </script>
+</body>
+</html>
+

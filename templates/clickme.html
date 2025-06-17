@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parts of Speech with Interactive Exercises</title>
+  <style>
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+h1 {
+  color: #333;
+  margin-top: 20px;
+}
+
+p {
+  font-size: 18px;
+  color: #666;
+}
+
+table {
+  width: 100%;
+  margin: 20px 0;
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+}
+
+thead {
+  background-color: #4CAF50;
+  color: white;
+}
+
+tbody tr {
+  cursor: pointer;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+  background-color: #ddd;
+}
+
+.details-box {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  display: none;
+}
+
+#details-title {
+  color: #4CAF50;
+  font-size: 24px;
+}
+
+#details-content {
+  font-size: 18px;
+  color: #333;
+}
+
+#exercise-section {
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+input {
+  padding: 10px;
+  margin-top: 10px;
+  width: 60%;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+#feedback {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Parts of Speech with Exercises</h1>
+    <p>Click on a part of speech to practice!</p>
+
+    <table id="pos-table">
+      <thead>
+        <tr>
+          <th>Part of Speech</th>
+          <th>Definition</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr onclick="showDetails('noun')">
+          <td>Noun</td>
+          <td>A word that names a person, place, thing, or idea.</td>
+          <td>John, cat, happiness</td>
+        </tr>
+        <tr onclick="showDetails('pronoun')">
+          <td>Pronoun</td>
+          <td>A word that replaces a noun.</td>
+          <td>he, she, it</td>
+        </tr>
+        <tr onclick="showDetails('adjective')">
+          <td>Adjective</td>
+          <td>Describes a noun or pronoun.</td>
+          <td>red, happy, tall</td>
+        </tr>
+        <tr onclick="showDetails('verb')">
+          <td>Verb</td>
+          <td>Shows an action or state of being.</td>
+          <td>run, jump, is</td>
+        </tr>
+        <tr onclick="showDetails('adverb')">
+          <td>Adverb</td>
+          <td>Modifies a verb, adjective, or adverb.</td>
+          <td>quickly, very, now</td>
+        </tr>
+        <tr onclick="showDetails('preposition')">
+          <td>Preposition</td>
+          <td>Shows the relationship of a noun or pronoun to another word.</td>
+          <td>on, in, at</td>
+        </tr>
+        <tr onclick="showDetails('conjunction')">
+          <td>Conjunction</td>
+          <td>Connects words, phrases, or clauses.</td>
+          <td>and, but, because</td>
+        </tr>
+        <tr onclick="showDetails('interjection')">
+          <td>Interjection</td>
+          <td>Expresses emotion or feeling.</td>
+          <td>Wow!, Ouch!, Oh no!</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div id="details" class="details-box">
+      <h2 id="details-title"></h2>
+      <p id="details-content"></p>
+      
+      <div id="exercise-section"></div>
+
+      <label for="user-answer">Your Answer:</label>
+      <input type="text" id="user-answer">
+      <button onclick="checkAnswer()">Submit Answer</button>
+      <p id="feedback"></p>
+    </div>
+  </div>
+
+  <script>
+let correctAnswer = '';  
+
+function showDetails(partOfSpeech) {
+  const detailsBox = document.getElementById('details');
+  const title = document.getElementById('details-title');
+  const content = document.getElementById('details-content');
+  const exerciseSection = document.getElementById('exercise-section');
+  const feedback = document.getElementById('feedback');
+
+  feedback.innerHTML = '';
+
+  const posData = {
+    noun: {
+      title: 'Noun',
+      content: 'A noun is a word that refers to a person, place, thing, or idea. For example: "John", "cat", "happiness".',
+      exercise: `
+        <h3>Exercise: Identify the Nouns</h3>
+        <p>Find the nouns in the following sentence:</p>
+        <p><i>"The cat jumped over the fence and scared the dog."</i></p>
+      `,
+      answer: 'cat, fence, dog'
+    },
+    pronoun: {
+      title: 'Pronoun',
+      content: 'A pronoun is a word that replaces a noun to avoid repetition. For example: "he", "she", "it".',
+      exercise: `
+        <h3>Exercise: Replace with Pronouns</h3>
+        <p>Replace the nouns with pronouns in this sentence:</p>
+        <p><i>"Sarah loves her dog, and Sarah takes her dog to the park."</i></p>
+      `,
+      answer: 'she, her, it'
+    },
+    adjective: {
+      title: 'Adjective',
+      content: 'An adjective describes or modifies a noun or pronoun. For example: "red", "happy", "tall".',
+      exercise: `
+        <h3>Exercise: Spot the Adjectives</h3>
+        <p>Find the adjectives in the following sentence:</p>
+        <p><i>"The tall tree has beautiful green leaves."</i></p>
+      `,
+      answer: 'tall, beautiful, green'
+    },
+    verb: {
+      title: 'Verb',
+      content: 'A verb shows action or a state of being. For example: "run", "jump", "is".',
+      exercise: `
+        <h3>Exercise: Action or State of Being?</h3>
+        <p>Identify the verbs in this sentence:</p>
+        <p><i>"She is reading a book while her brother plays."</i></p>
+      `,
+      answer: 'is, reading, plays'
+    },
+    adverb: {
+      title: 'Adverb',
+      content: 'An adverb modifies a verb, adjective, or another adverb. For example: "quickly", "very", "now".',
+      exercise: `
+        <h3>Exercise: Modify the Verbs</h3>
+        <p>Identify the adverbs in this sentence:</p>
+        <p><i>"He quickly ran to the store, but he very slowly returned."</i></p>
+      `,
+      answer: 'quickly, very, slowly'
+    },
+    preposition: {
+      title: 'Preposition',
+      content: 'A preposition shows the relationship of a noun or pronoun to another word. For example: "on", "in", "at".',
+      exercise: `
+        <h3>Exercise: Identify the Prepositions</h3>
+        <p>Find the prepositions in this sentence:</p>
+        <p><i>"The book is on the table, and the pen is in the drawer."</i></p>
+      `,
+      answer: 'on, in'
+    },
+    conjunction: {
+      title: 'Conjunction',
+      content: 'A conjunction connects words, phrases, or clauses. For example: "and", "but", "because".',
+      exercise: `
+        <h3>Exercise: Identify the Conjunctions</h3>
+        <p>Find the conjunctions in this sentence:</p>
+        <p><i>"I wanted to go to the park, but it started raining, so I stayed inside."</i></p>
+      `,
+      answer: 'but, so'
+    },
+    interjection: {
+      title: 'Interjection',
+      content: 'An interjection expresses emotion or feeling. For example: "Wow!", "Ouch!", "Oh no!".',
+      exercise: `
+        <h3>Exercise: Spot the Interjections</h3>
+        <p>Find the interjections in the following sentences:</p>
+        <p><i>"Wow! That was an amazing show. Ouch! I hurt my knee."</i></p>
+      `,
+      answer: 'Wow, Ouch'
+    }
+  };
+
+  if (posData[partOfSpeech]) {
+    correctAnswer = posData[partOfSpeech].answer;
+    title.innerHTML = posData[partOfSpeech].title;
+    content.innerHTML = posData[partOfSpeech].content;
+    exerciseSection.innerHTML = posData[partOfSpeech].exercise;
+
+    detailsBox.style.display = 'block';
+  }
+}
+
+function checkAnswer() {
+  const userAnswer = document.getElementById('user-answer').value.trim().toLowerCase();
+  const feedback = document.getElementById('feedback');
+
+  if (userAnswer === correctAnswer.toLowerCase()) {
+    feedback.innerHTML = '<span style="color: green;">Correct! Great job!</span>';
+  } else {
+    feedback.innerHTML = '<span style="color: red;">Incorrect. The correct answer is: ' + correctAnswer + '</span>';
+  }
+}
+
+  </script>
+</body>
+</html>
